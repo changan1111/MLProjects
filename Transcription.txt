@@ -1,0 +1,20 @@
+Your transcription
+
+File name: demo.m4a
+Duration: 4 minutes
+
+
+00:00:02 - Speaker: B
+Hi, and, um, welcome to any transcript.com in this demo video. We would like to show you how to get the best transcription as fast as possible. The first thing we like to do is to explain you how our editor works. Bob, can you maybe explain what to do once the transcription has been uploaded? 
+
+00:00:21 - Speaker: A
+The Online Editor tool is an online tool that can be accessed via the link included in the email containing the transcript result. This tool offers the possibility to review and edit the transcripts. You can listen to the audio file while a cursor moves along with the text. By using the bar at the bottom of the tool, the audio file can be played at standard speed, and there is also the possibility to pause the recording, for example, to make any adjustments to the transcript results. Furthermore, the audio can be easily rewound by 15 seconds with a simple mouse clip. Finally, you can choose to play the audio at a lower speed of zero eight or zero nine times the normal speed. This could be done by clicking the button at the right side of the timeline bar. 
+
+00:01:09 - Speaker: B
+That sounds great. Are there any other tricks that can be used while working with the editor? 
+
+00:01:15 - Speaker: A
+Yes, for sure. There are several buttons that can be used in order to make your work a lot easier. First of all, there's the undo button, which cancels your last adjustment made to the file. The second button that looks like a pencil enables you to make alterations to the text word by word. When the button is switched on and you click on a word, a new window appears. If the switch is turned off, then a word can be clicked in the text, causing the audio file to go directly to the timestamp in which that word is spoken. This way, there is no need to manually search for the right time when a word that may need to be adjusted is pronounced. The third button can be used when the transcription is constantly displaying a word in the wrong way for example, a specific name or certain jargon. And this word appears several times in the transcription. This button replaces all those words at once. The button is similar to the replace all function in Word. The fourth button can be used to maneuver quickly to words where the correctness of the transcription is uncertain. The editor automatically marks in red where the correctness of the transcription is uncertain. This button can be used to quickly move to the text next uh, to the next word marked in red, to adjust the transcription even faster. When you change your mind, you want to keep the change you made. You can use the redo button, which is the last button on the display. 
+
+00:02:54 - Speaker: B
+Thanks for the explanation, Bob. I think there's one more thing we like to bring to the attention of our customers, and that's the top right button in the editor. This button allows the file to be downloaded in Word or text format where the user can choose whether or not the timestamps and or the indication per speaker is downloaded in the final results. Thank you very much. 
