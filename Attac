@@ -1,0 +1,36 @@
+import axios from 'axios';
+import * as fs from 'fs';
+import * as path from 'path';
+
+async function uploadFileToTestRail(testRailUrl: string, testRailApiKey: string, testCaseId: string, filePath: string, fileName: string) {
+    const url = `${testRailUrl}/index.php?/api/v2/add_attachment_to_case/${testCaseId}`;
+
+    // Read the file
+    const file = fs.createReadStream(path.resolve(filePath, fileName));
+
+    // Configure the request
+    const form = new FormData();
+    form.append('attachment', file);
+
+    try {
+        const response = await axios.post(url, form, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Basic ${Buffer.from(testRailApiKey).toString('base64')}`
+            }
+        });
+
+        console.log('File uploaded successfully:', response.data);
+    } catch (error) {
+        console.error('Error uploading file:', error);
+    }
+}
+
+// Usage example
+const testRailUrl = 'https://yourtestrailinstance.testrail.io'; // Replace with your TestRail URL
+const testRailApiKey = 'your_api_key'; // Replace with your TestRail API key
+const testCaseId = '1'; // Replace with your test case ID
+const filePath = './path/to/your/file'; // Replace with the path to your file
+const fileName = 'result-file.txt'; // Replace with the file name
+
+uploadFileToTestRail(testRailUrl, testRailApiKey, testCaseId, filePath, fileName);
