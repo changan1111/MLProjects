@@ -565,7 +565,8 @@ Status           →  "allowedValues": ["ACTIVE","CLOSED","DORMANT"]</pre>
       </table>
       <div style="margin-top:12px;font-size:11px;color:#475569;font-family:JetBrains Mono,monospace;background:#020817;border:1px solid #1e293b;border-radius:6px;padding:10px;">
         ⚠ A row is <strong style="color:#e2e8f0;">skipped</strong> if: Col A is blank, Col B is blank, or Col H (Length) is not a number.<br/>
-        ✅ A row is <strong style="color:#4ade80;">included</strong> if: Col A has a record type, Col B has a field name, and Col H has a numeric length.
+        ✅ A row is <strong style="color:#4ade80;">included</strong> if: Col A has a record type, Col B has a field name, and Col H has a numeric length.<br/>
+        🔖 <strong style="color:#00d4ff;">pos:1 is always auto-assigned as "Record Type"</strong> for every record. Your FSD fields start at pos:2 (position 4 in the file). This matches the file format where chars 1–3 are the record type and fields begin at char 4.
       </div>
     </div>
   </div>
@@ -1717,10 +1718,19 @@ function parseFSD(){
     if(!recordMap[colA]) {
       recordMap[colA] = [];
       recordOrder.push(colA);
+      // pos:1 is always the record type token in the actual file (chars 1-3).
+      // FSD fields begin at position 2 (char 4 onwards), so pre-insert it.
+      recordMap[colA].push({
+        pos: 1,
+        name: "Record Type",
+        mandatory: true,
+        length: 3,
+        _autoInserted: true
+      });
     }
 
     recordMap[colA].push({
-      pos: recordMap[colA].length + 1,
+      pos: recordMap[colA].length + 1,  // starts at 2 because Record Type occupies pos:1
       name: colB,
       mandatory: colD.toUpperCase() === "Y",
       length: length
@@ -1750,6 +1760,7 @@ function parseFSD(){
         const obj = { pos: f.pos, name: f.name };
         if(f.mandatory) obj.mandatory = true;
         return obj;
+        // Note: _autoInserted is intentionally not copied to output
       })
     };
     colorIdx++;
