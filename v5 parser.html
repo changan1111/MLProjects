@@ -3,58 +3,106 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>FIS MBP Extract Parser v5</title>
+<title>FIS MBP Extract Parser v7</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Syne:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
+:root{
+  --bg:        #020817;
+  --surface:   #0f172a;
+  --surface2:  #162032;
+  --border:    #1e293b;
+  --border2:   #334155;
+  --text:      #e2e8f0;
+  --text2:     #94a3b8;
+  --text3:     #64748b;
+  --text4:     #475569;
+  --text5:     #334155;
+  --accent:    #00d4ff;
+  --purple:    #a78bfa;
+  --green:     #4ade80;
+  --orange:    #f97316;
+  --red:       #ef4444;
+  --yellow:    #fbbf24;
+  --field-bg:  #020817;
+  --raw-bg:    #020817;
+  --input-col: #4ade80;
+  --json-col:  #fbbf24;
+}
+body.day{
+  --bg:        #f0f4f8;
+  --surface:   #ffffff;
+  --surface2:  #e8edf2;
+  --border:    #d1d9e0;
+  --border2:   #b0bec5;
+  --text:      #0f172a;
+  --text2:     #374151;
+  --text3:     #64748b;
+  --text4:     #94a3b8;
+  --text5:     #b0bec5;
+  --accent:    #0284c7;
+  --purple:    #7c3aed;
+  --green:     #16a34a;
+  --orange:    #ea580c;
+  --red:       #dc2626;
+  --yellow:    #d97706;
+  --field-bg:  #f8fafc;
+  --raw-bg:    #f1f5f9;
+  --input-col: #15803d;
+  --json-col:  #b45309;
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{background:#020817;color:#e2e8f0;font-family:'Inter',sans-serif;min-height:100vh;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;transition:background 0.2s,color 0.2s;}
 ::-webkit-scrollbar{width:6px;height:6px;}
-::-webkit-scrollbar-track{background:#0f172a;}
-::-webkit-scrollbar-thumb{background:#334155;border-radius:3px;}
+::-webkit-scrollbar-track{background:var(--surface);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+
+/* ── THEME TOGGLE ── */
+#theme-toggle{background:none;border:1px solid var(--border2);border-radius:20px;padding:4px 10px;cursor:pointer;font-size:12px;color:var(--text2);display:flex;align-items:center;gap:5px;transition:all 0.2s;white-space:nowrap;margin-left:auto;}
+#theme-toggle:hover{border-color:var(--accent);color:var(--accent);}
 
 /* ── HEADER ── */
-#header{background:linear-gradient(135deg,#0f172a,#020817);border-bottom:1px solid #1e293b;padding:20px 24px 0;}
+#header{background:linear-gradient(135deg,#0f172a,#020817);border-bottom:1px solid var(--border);padding:20px 24px 0;}
 #header-top{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
 #logo{width:40px;height:40px;background:linear-gradient(135deg,#00d4ff,#a78bfa);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
 #title{font-size:20px;font-weight:800;font-family:'Syne',sans-serif;letter-spacing:-0.5px;}
-#subtitle{font-size:11px;color:#475569;letter-spacing:1px;margin-top:2px;}
+#subtitle{font-size:11px;color:var(--text4);letter-spacing:1px;margin-top:2px;}
 .tab-bar{display:flex;gap:0;overflow-x:auto;}
-.tab-btn{background:none;border:none;border-bottom:2px solid transparent;color:#475569;padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
-.tab-btn.active{border-bottom-color:#00d4ff;color:#00d4ff;}
+.tab-btn{background:none;border:none;border-bottom:2px solid transparent;color:var(--text4);padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.tab-btn.active{border-bottom-color:var(--accent);color:var(--accent);}
 
 /* ── LAYOUT ── */
 #main{padding:24px;max-width:1200px;margin:0 auto;}
-.panel{background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:20px;margin-bottom:20px;}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:20px;}
 .panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
-.panel-label{font-size:13px;font-weight:600;color:#94a3b8;}
+.panel-label{font-size:13px;font-weight:600;color:var(--text2);}
 .btn-group{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
-.btn{background:#1e293b;border:1px solid #334155;border-radius:6px;color:#94a3b8;padding:5px 12px;font-size:11px;cursor:pointer;font-family:'JetBrains Mono',monospace;transition:all 0.2s;}
+.btn{background:var(--border);border:1px solid var(--border2);border-radius:6px;color:var(--text2);padding:5px 12px;font-size:11px;cursor:pointer;font-family:'JetBrains Mono',monospace;transition:all 0.2s;}
 .btn:hover{opacity:0.8;}
-.btn.danger{border-color:#ef444440;color:#ef4444;}
-.btn.success{border-color:#4ade8040;color:#4ade80;}
-.btn.primary{border-color:#00d4ff40;color:#00d4ff;}
+.btn.danger{border-color:var(--red)40;color:var(--red);}
+.btn.success{border-color:var(--green)40;color:var(--green);}
+.btn.primary{border-color:var(--accent)40;color:var(--accent);}
 select.btn{padding:5px 10px;}
 
 /* ── EXTRACT MAPPING TABS ── */
 #extract-tabs-wrap{margin-bottom:20px;display:none;}
-#extract-tabs-label{font-size:11px;color:#475569;font-family:'JetBrains Mono',monospace;margin-bottom:8px;letter-spacing:1px;text-transform:uppercase;}
+#extract-tabs-label{font-size:11px;color:var(--text4);font-family:'JetBrains Mono',monospace;margin-bottom:8px;letter-spacing:1px;text-transform:uppercase;}
 #extract-tabs{display:flex;flex-wrap:wrap;gap:8px;}
-.extract-tab{background:#0f172a;border:1px solid #1e293b;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:12px;font-weight:600;transition:all 0.2s;display:flex;align-items:center;gap:6px;}
-.extract-tab.active{border-color:#00d4ff;color:#00d4ff;background:#00d4ff10;}
-.extract-tab .del-x{color:#475569;font-size:10px;margin-left:4px;cursor:pointer;}
-.extract-tab .del-x:hover{color:#ef4444;}
+.extract-tab{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 16px;cursor:pointer;font-size:12px;font-weight:600;transition:all 0.2s;display:flex;align-items:center;gap:6px;}
+.extract-tab.active{border-color:var(--accent);color:var(--accent);background:#00d4ff10;}
+.extract-tab .del-x{color:var(--text4);font-size:10px;margin-left:4px;cursor:pointer;}
+.extract-tab .del-x:hover{color:var(--red);}
 
 /* ── INPUT ── */
-#ext-input{width:100%;height:160px;background:#020817;border:1px solid #1e293b;border-radius:8px;color:#4ade80;font-family:'JetBrains Mono',monospace;font-size:11px;padding:12px;resize:vertical;line-height:1.6;outline:none;}
-#parse-btn{margin-top:12px;width:100%;padding:12px;background:linear-gradient(135deg,#00d4ff20,#a78bfa20);border:1px solid #00d4ff50;border-radius:8px;color:#00d4ff;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:1px;font-family:'JetBrains Mono',monospace;transition:all 0.2s;}
-#parse-btn:disabled{background:#1e293b;border-color:#1e293b;color:#475569;cursor:not-allowed;}
+#ext-input{width:100%;height:160px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--green);font-family:'JetBrains Mono',monospace;font-size:11px;padding:12px;resize:vertical;line-height:1.6;outline:none;}
+#parse-btn{margin-top:12px;width:100%;padding:12px;background:linear-gradient(135deg,#00d4ff20,#a78bfa20);border:1px solid #00d4ff50;border-radius:8px;color:var(--accent);font-size:13px;font-weight:700;cursor:pointer;letter-spacing:1px;font-family:'JetBrains Mono',monospace;transition:all 0.2s;}
+#parse-btn:disabled{background:var(--border);border-color:var(--border);color:var(--text4);cursor:not-allowed;}
 
 /* ── SUMMARY ── */
 #summary{margin-bottom:20px;display:none;}
 .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
-.stat-card{background:#0f172a;border-radius:10px;padding:14px 16px;text-align:center;}
+.stat-card{background:var(--surface);border-radius:10px;padding:14px 16px;text-align:center;}
 .stat-value{font-size:20px;font-weight:800;font-family:'JetBrains Mono',monospace;}
-.stat-label{font-size:10px;color:#64748b;margin-top:2px;text-transform:uppercase;letter-spacing:1px;}
+.stat-label{font-size:10px;color:var(--text3);margin-top:2px;text-transform:uppercase;letter-spacing:1px;}
 #type-badges{display:flex;flex-wrap:wrap;gap:8px;}
 .type-badge{border-radius:6px;padding:4px 10px;font-size:11px;font-family:'JetBrains Mono',monospace;cursor:pointer;transition:all 0.2s;}
 .type-badge:hover{opacity:0.8;}
@@ -62,126 +110,126 @@ select.btn{padding:5px 10px;}
 
 /* ── FILTER BAR ── */
 #filter-bar{display:none;flex-wrap:wrap;gap:8px;margin-bottom:16px;align-items:center;}
-#search-input{flex:1;min-width:180px;background:#0f172a;border:1px solid #1e293b;border-radius:6px;color:#e2e8f0;padding:7px 12px;font-size:12px;font-family:'JetBrains Mono',monospace;outline:none;}
+#search-input{flex:1;min-width:180px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:7px 12px;font-size:12px;font-family:'JetBrains Mono',monospace;outline:none;}
 #filter-buttons{display:flex;gap:6px;flex-wrap:wrap;}
-.filter-btn{background:#0f172a;border:1px solid #1e293b;border-radius:6px;color:#64748b;padding:5px 12px;font-size:11px;cursor:pointer;font-family:'JetBrains Mono',monospace;transition:all 0.2s;}
+.filter-btn{background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text3);padding:5px 12px;font-size:11px;cursor:pointer;font-family:'JetBrains Mono',monospace;transition:all 0.2s;}
 
 /* ── EXPAND/COLLAPSE CONTROLS ── */
 #trn-controls{display:none;flex-wrap:wrap;gap:8px;margin-bottom:12px;align-items:center;}
-#records-info{font-size:11px;color:#475569;margin-bottom:10px;font-family:'JetBrains Mono',monospace;display:none;}
+#records-info{font-size:11px;color:var(--text4);margin-bottom:10px;font-family:'JetBrains Mono',monospace;display:none;}
 
 /* ── TRN GROUP CARD ── */
 #records-list{display:none;}
-.trn-group{border-radius:12px;margin-bottom:12px;overflow:hidden;border:1px solid #1e293b;}
-.trn-group.has-issues{border-color:#f9731650;}
+.trn-group{border-radius:12px;margin-bottom:12px;overflow:hidden;border:1px solid var(--border);}
+.trn-group.has-issues{border-color:var(--orange)50;}
 
 .trn-header{
   display:flex;align-items:center;gap:10px;padding:12px 16px;
   cursor:pointer;user-select:none;
-  background:#0f172a;
+  background:var(--surface);
   border-bottom:1px solid transparent;
   transition:all 0.2s;
 }
-.trn-header:hover{background:#162032;}
-.trn-header.open{border-bottom-color:#1e293b;}
-.trn-number{font-size:13px;font-weight:800;font-family:'JetBrains Mono',monospace;color:#00d4ff;min-width:60px;}
+.trn-header:hover{background:var(--surface2);}
+.trn-header.open{border-bottom-color:var(--border);}
+.trn-number{font-size:13px;font-weight:800;font-family:'JetBrains Mono',monospace;color:var(--accent);min-width:60px;}
 .trn-meta{flex:1;display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
-.trn-meta-chip{font-size:10px;font-family:'JetBrains Mono',monospace;padding:2px 8px;border-radius:4px;background:#1e293b;color:#64748b;}
-.trn-lines{font-size:10px;color:#334155;font-family:'JetBrains Mono',monospace;}
-.trn-issue-badge{font-size:10px;background:#f9731620;color:#f97316;padding:2px 8px;border-radius:4px;}
-.trn-ok-badge{font-size:10px;background:#4ade8020;color:#4ade80;padding:2px 8px;border-radius:4px;}
-.trn-chevron{color:#475569;font-size:12px;transition:transform 0.2s;margin-left:4px;}
+.trn-meta-chip{font-size:10px;font-family:'JetBrains Mono',monospace;padding:2px 8px;border-radius:4px;background:var(--border);color:var(--text3);}
+.trn-lines{font-size:10px;color:var(--text5);font-family:'JetBrains Mono',monospace;}
+.trn-issue-badge{font-size:10px;background:#f9731620;color:var(--orange);padding:2px 8px;border-radius:4px;}
+.trn-ok-badge{font-size:10px;background:#4ade8020;color:var(--green);padding:2px 8px;border-radius:4px;}
+.trn-chevron{color:var(--text4);font-size:12px;transition:transform 0.2s;margin-left:4px;}
 .trn-body{display:none;padding:10px 12px 12px;}
 .trn-body.open{display:block;}
 
 /* ── RECORD CARD (inside TRN) ── */
 .record-card{border-radius:8px;margin-bottom:6px;overflow:hidden;}
 .record-header{display:flex;align-items:center;gap:10px;padding:9px 12px;cursor:pointer;user-select:none;flex-wrap:wrap;}
-.record-linenum{font-size:11px;font-family:'JetBrains Mono',monospace;color:#334155;min-width:50px;}
+.record-linenum{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--text5);min-width:50px;}
 .record-type-badge{font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;font-family:'JetBrains Mono',monospace;min-width:36px;text-align:center;color:#000;}
 .record-name{font-size:12px;font-weight:700;flex:1;}
-.error-tag{color:#ef4444;font-size:10px;background:#ef444420;padding:2px 8px;border-radius:4px;}
-.val-fail-tag{color:#f97316;font-size:10px;background:#f9731620;padding:2px 8px;border-radius:4px;}
-.val-pass-tag{color:#4ade80;font-size:10px;background:#4ade8020;padding:2px 8px;border-radius:4px;}
-.record-chevron{color:#475569;font-size:11px;transition:transform 0.2s;}
+.error-tag{color:var(--red);font-size:10px;background:#ef444420;padding:2px 8px;border-radius:4px;}
+.val-fail-tag{color:var(--orange);font-size:10px;background:#f9731620;padding:2px 8px;border-radius:4px;}
+.val-pass-tag{color:var(--green);font-size:10px;background:#4ade8020;padding:2px 8px;border-radius:4px;}
+.record-chevron{color:var(--text4);font-size:11px;transition:transform 0.2s;}
 .record-body{padding:0 12px 12px;display:none;}
 .record-body.open{display:block;}
 .fields-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;}
-.field-card{background:#020817;border-radius:6px;padding:8px 10px;border:1px solid #0f172a;}
-.field-card.vfail{border-color:#f9731650;background:#f9731605;}
-.field-label{font-size:9px;color:#334155;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;}
+.field-card{background:var(--bg);border-radius:6px;padding:8px 10px;border:1px solid #0f172a;}
+.field-card.vfail{border-color:var(--orange)50;background:#f9731605;}
+.field-label{font-size:9px;color:var(--text5);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;}
 .field-value{font-size:13px;font-family:'JetBrains Mono',monospace;font-weight:600;word-break:break-all;}
-.field-val-msg{font-size:9px;color:#f97316;margin-top:4px;font-family:'JetBrains Mono',monospace;}
-.raw-line{margin-top:8px;padding:5px 10px;background:#020817;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#1e293b;word-break:break-all;}
+.field-val-msg{font-size:9px;color:var(--orange);margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.raw-line{margin-top:8px;padding:5px 10px;background:var(--bg);border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#1e293b;word-break:break-all;}
 
 /* ── VALIDATION SUMMARY ── */
-#val-summary{display:none;margin-bottom:20px;background:#0f172a;border-radius:12px;padding:16px;}
+#val-summary{display:none;margin-bottom:20px;background:var(--surface);border-radius:12px;padding:16px;}
 #val-summary-title{font-size:13px;font-weight:700;margin-bottom:12px;}
-.val-issue-row{display:flex;align-items:flex-start;gap:10px;padding:6px 0;border-bottom:1px solid #1e293b;font-size:11px;font-family:'JetBrains Mono',monospace;}
+.val-issue-row{display:flex;align-items:flex-start;gap:10px;padding:6px 0;border-bottom:1px solid var(--border);font-size:11px;font-family:'JetBrains Mono',monospace;}
 .val-issue-row:last-child{border-bottom:none;}
-.val-line-ref{color:#f97316;min-width:100px;}
-.val-issue-detail{color:#94a3b8;flex:1;}
+.val-line-ref{color:var(--orange);min-width:100px;}
+.val-issue-detail{color:var(--text2);flex:1;}
 
 #error-panel{display:none;margin-top:16px;background:#ef444410;border:1px solid #ef444430;border-radius:8px;padding:14px;}
-.error-title{color:#ef4444;font-size:12px;font-weight:700;margin-bottom:8px;}
+.error-title{color:var(--red);font-size:12px;font-weight:700;margin-bottom:8px;}
 .error-line{font-size:11px;color:#f87171;font-family:'JetBrains Mono',monospace;margin-bottom:4px;}
 
 /* ── LEGEND ── */
 #legend-tab{display:none;}
 .legend-header{margin-bottom:20px;}
 .legend-title{font-size:18px;font-weight:800;font-family:'Syne',sans-serif;margin-bottom:4px;}
-.legend-sub{color:#475569;font-size:12px;}
+.legend-sub{color:var(--text4);font-size:12px;}
 .legend-card{border-radius:10px;padding:16px;margin-bottom:12px;}
 .legend-card-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
 .legend-rt-badge{font-size:12px;font-weight:800;padding:3px 10px;border-radius:5px;font-family:'JetBrains Mono',monospace;color:#000;}
 .legend-rt-name{font-size:15px;font-weight:700;}
-.legend-field-count{font-size:11px;color:#475569;margin-left:auto;}
+.legend-field-count{font-size:11px;color:var(--text4);margin-left:auto;}
 .legend-fields-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px;}
-.legend-field{display:flex;gap:8px;align-items:flex-start;background:#0f172a;border-radius:5px;padding:6px 8px;}
+.legend-field{display:flex;gap:8px;align-items:flex-start;background:var(--surface);border-radius:5px;padding:6px 8px;}
 .legend-pos{font-size:10px;font-family:'JetBrains Mono',monospace;font-weight:800;min-width:22px;text-align:center;border-radius:3px;padding:1px 4px;flex-shrink:0;}
-.legend-fname{font-size:11px;color:#94a3b8;flex:1;}
-.legend-frules{font-size:9px;color:#475569;font-family:'JetBrains Mono',monospace;margin-top:2px;}
+.legend-fname{font-size:11px;color:var(--text2);flex:1;}
+.legend-frules{font-size:9px;color:var(--text4);font-family:'JetBrains Mono',monospace;margin-top:2px;}
 .rule-badge{display:inline-block;padding:1px 5px;border-radius:3px;font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;margin-right:3px;margin-top:2px;}
 
 /* ── MAPPING TAB ── */
 #mapping-tab{display:none;}
 #json-status{font-size:11px;margin-top:8px;font-family:'JetBrains Mono',monospace;padding:6px 10px;border-radius:6px;display:none;}
-#json-status.ok{background:#4ade8015;border:1px solid #4ade8030;color:#4ade80;}
-#json-status.err{background:#ef444415;border:1px solid #ef444430;color:#ef4444;}
-#json-input{width:100%;height:220px;background:#020817;border:1px solid #1e293b;border-radius:8px;color:#fbbf24;font-family:'JetBrains Mono',monospace;font-size:11px;padding:12px;resize:vertical;line-height:1.6;outline:none;}
+#json-status.ok{background:#4ade8015;border:1px solid #4ade8030;color:var(--green);}
+#json-status.err{background:#ef444415;border:1px solid #ef444430;color:var(--red);}
+#json-input{width:100%;height:220px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--yellow);font-family:'JetBrains Mono',monospace;font-size:11px;padding:12px;resize:vertical;line-height:1.6;outline:none;}
 #saved-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
-.saved-chip{background:#1e293b;border:1px solid #334155;border-radius:6px;padding:4px 10px;font-size:11px;color:#94a3b8;cursor:pointer;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;gap:6px;transition:all 0.2s;}
-.saved-chip:hover{border-color:#00d4ff50;color:#00d4ff;}
-.saved-chip .x{color:#475569;font-size:10px;}
-.saved-chip .x:hover{color:#ef4444;}
-.tpl-label{font-size:11px;color:#475569;margin-bottom:6px;font-family:'JetBrains Mono',monospace;}
+.saved-chip{background:var(--border);border:1px solid var(--border2);border-radius:6px;padding:4px 10px;font-size:11px;color:var(--text2);cursor:pointer;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;gap:6px;transition:all 0.2s;}
+.saved-chip:hover{border-color:var(--accent)50;color:var(--accent);}
+.saved-chip .x{color:var(--text4);font-size:10px;}
+.saved-chip .x:hover{color:var(--red);}
+.tpl-label{font-size:11px;color:var(--text4);margin-bottom:6px;font-family:'JetBrains Mono',monospace;}
 .tpl-chips{display:flex;flex-wrap:wrap;gap:6px;}
-.tpl-chip{background:#1e293b;border:1px solid #334155;border-radius:6px;padding:4px 10px;font-size:11px;color:#a78bfa;cursor:pointer;font-family:'JetBrains Mono',monospace;transition:all 0.2s;}
-.tpl-chip:hover{border-color:#a78bfa50;background:#a78bfa10;}
-.readme-code{background:#020817;border:1px solid #1e293b;border-radius:6px;padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#fbbf24;margin:8px 0;line-height:1.8;overflow-x:auto;}
+.tpl-chip{background:var(--border);border:1px solid var(--border2);border-radius:6px;padding:4px 10px;font-size:11px;color:var(--purple);cursor:pointer;font-family:'JetBrains Mono',monospace;transition:all 0.2s;}
+.tpl-chip:hover{border-color:var(--purple)50;background:#a78bfa10;}
+.readme-code{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--yellow);margin:8px 0;line-height:1.8;overflow-x:auto;}
 .readme-table{width:100%;border-collapse:collapse;font-size:11px;margin:10px 0;}
-.readme-table th{background:#1e293b;color:#94a3b8;padding:6px 10px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;}
-.readme-table td{padding:6px 10px;border-bottom:1px solid #1e293b;color:#64748b;font-family:'JetBrains Mono',monospace;font-size:11px;vertical-align:top;}
-.readme-table td:first-child{color:#fbbf24;}
+.readme-table th{background:var(--border);color:var(--text2);padding:6px 10px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;}
+.readme-table td{padding:6px 10px;border-bottom:1px solid var(--border);color:var(--text3);font-family:'JetBrains Mono',monospace;font-size:11px;vertical-align:top;}
+.readme-table td:first-child{color:var(--yellow);}
 
 /* ── README TAB ── */
 #readme-tab{display:none;}
-.readme-section{background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:24px;margin-bottom:16px;}
-.readme-h1{font-size:22px;font-weight:800;font-family:'Syne',sans-serif;color:#00d4ff;margin-bottom:6px;}
-.readme-h2{font-size:15px;font-weight:700;color:#a78bfa;margin:20px 0 10px;font-family:'Syne',sans-serif;border-bottom:1px solid #1e293b;padding-bottom:6px;}
-.readme-h3{font-size:13px;font-weight:700;color:#4ade80;margin:14px 0 6px;}
-.readme-p{font-size:12px;color:#94a3b8;line-height:1.8;margin-bottom:8px;}
+.readme-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:16px;}
+.readme-h1{font-size:22px;font-weight:800;font-family:'Syne',sans-serif;color:var(--accent);margin-bottom:6px;}
+.readme-h2{font-size:15px;font-weight:700;color:var(--purple);margin:20px 0 10px;font-family:'Syne',sans-serif;border-bottom:1px solid var(--border);padding-bottom:6px;}
+.readme-h3{font-size:13px;font-weight:700;color:var(--green);margin:14px 0 6px;}
+.readme-p{font-size:12px;color:var(--text2);line-height:1.8;margin-bottom:8px;}
 .readme-step{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;}
 .readme-step-num{background:linear-gradient(135deg,#00d4ff,#a78bfa);color:#000;font-weight:800;font-size:11px;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
-.readme-step-title{font-size:12px;font-weight:700;color:#e2e8f0;margin-bottom:3px;}
-.readme-step-desc{font-size:11px;color:#64748b;line-height:1.7;}
-.readme-info{background:#00d4ff10;border:1px solid #00d4ff30;border-radius:6px;padding:10px 14px;font-size:11px;color:#00d4ff;margin:8px 0;}
-.readme-warn{background:#fbbf2410;border:1px solid #fbbf2430;border-radius:6px;padding:10px 14px;font-size:11px;color:#fbbf24;margin:8px 0;}
-.copilot-prompt{background:#020817;border:1px solid #a78bfa40;border-radius:8px;padding:14px;font-size:11px;color:#a78bfa;font-family:'JetBrains Mono',monospace;line-height:1.8;position:relative;margin:10px 0;white-space:pre-wrap;}
-.copy-btn{position:absolute;top:8px;right:8px;background:#1e293b;border:1px solid #334155;border-radius:4px;color:#64748b;padding:3px 8px;font-size:10px;cursor:pointer;}
+.readme-step-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.readme-step-desc{font-size:11px;color:var(--text3);line-height:1.7;}
+.readme-info{background:#00d4ff10;border:1px solid #00d4ff30;border-radius:6px;padding:10px 14px;font-size:11px;color:var(--accent);margin:8px 0;}
+.readme-warn{background:#fbbf2410;border:1px solid #fbbf2430;border-radius:6px;padding:10px 14px;font-size:11px;color:var(--yellow);margin:8px 0;}
+.copilot-prompt{background:var(--bg);border:1px solid #a78bfa40;border-radius:8px;padding:14px;font-size:11px;color:var(--purple);font-family:'JetBrains Mono',monospace;line-height:1.8;position:relative;margin:10px 0;white-space:pre-wrap;}
+.copy-btn{position:absolute;top:8px;right:8px;background:var(--border);border:1px solid var(--border2);border-radius:4px;color:var(--text3);padding:3px 8px;font-size:10px;cursor:pointer;}
 
 #no-mapping-msg{background:#fbbf2410;border:1px solid #fbbf2430;border-radius:8px;padding:16px;margin-bottom:16px;display:none;}
-#no-results{color:#475569;text-align:center;padding:40px;font-size:13px;display:none;}
+#no-results{color:var(--text4);text-align:center;padding:40px;font-size:13px;display:none;}
 
 @media(max-width:600px){.stat-grid{grid-template-columns:repeat(2,1fr);}#main{padding:16px;}.fields-grid{grid-template-columns:1fr 1fr;}}
 </style>
@@ -190,18 +238,20 @@ select.btn{padding:5px 10px;}
 
 <!-- HEADER -->
 <div id="header">
-  <div id="header-top">
+  <div id="header-top" style="display:flex;align-items:center;gap:12px;">
     <div id="logo">⚡</div>
     <div>
       <div id="title">FIS MBP Extract Parser</div>
-      <div id="subtitle">MODERN BANKING PLATFORM · TRN GROUPED · RECORD COUNT CHECK · TEST REPORT · v5</div>
+      <div id="subtitle">MODERN BANKING PLATFORM · FSD IMPORTER · EXT-FINAL TEMPLATE · v7</div>
     </div>
+    <button id="theme-toggle" onclick="toggleTheme()">🌙 Night</button>
   </div>
   <div class="tab-bar">
     <button class="tab-btn active" onclick="switchTab('parser')">🔍 Parser</button>
     <button class="tab-btn" onclick="switchTab('mapping')">⚙️ Mapping</button>
     <button class="tab-btn" onclick="switchTab('legend')">📖 Legend</button>
     <button class="tab-btn" onclick="switchTab('readme')">📘 README</button>
+    <button class="tab-btn" onclick="switchTab('fsd')">📥 FSD Importer</button>
   </div>
 </div>
 
@@ -269,7 +319,7 @@ select.btn{padding:5px 10px;}
     </div>
 
     <!-- Record Count Check Panel -->
-    <div id="rcc-panel" style="display:none;margin-bottom:16px;background:#0f172a;border-radius:12px;padding:16px;border:1px solid #1e293b;">
+    <div id="rcc-panel" style="display:none;margin-bottom:16px;background:var(--surface);border-radius:12px;padding:16px;border:1px solid var(--border);">
       <div id="rcc-title" style="font-size:13px;font-weight:700;margin-bottom:12px;"></div>
       <div id="rcc-rows"></div>
     </div>
@@ -334,6 +384,7 @@ select.btn{padding:5px 10px;}
           <span class="tpl-chip" onclick="loadTemplate('trn')">TRN Grouped (recommended)</span>
           <span class="tpl-chip" onclick="loadTemplate('basic')">Basic (no grouping)</span>
           <span class="tpl-chip" onclick="loadTemplate('full')">Full MBP Sample</span>
+          <span class="tpl-chip" id="ext-final-chip" onclick="loadTemplate('ext-final')" style="background:#00d4ff15;border-color:#00d4ff40;color:#00d4ff;font-weight:700;">⭐ Ext-Final</span>
         </div>
       </div>
     </div>
@@ -462,6 +513,112 @@ Status           →  "allowedValues": ["ACTIVE","CLOSED","DORMANT"]</pre>
     </div>
   </div>
 
+
+  <!-- ══════════════════════════════ FSD IMPORTER TAB ══════════════════════════════ -->
+  <div id="fsd-tab" style="display:none;">
+
+    <div style="background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:20px;margin-bottom:16px;">
+      <div style="font-size:18px;font-weight:800;font-family:Syne,sans-serif;color:#00d4ff;margin-bottom:6px;">📥 FSD to JSON Importer</div>
+      <div style="font-size:12px;color:#475569;line-height:1.8;margin-bottom:16px;">
+        Copy your entire FSD Excel sheet and paste below. The tool will auto-detect all record types and build the full JSON mapping instantly.<br/>
+        <span style="color:#fbbf24;">No manual JSON needed. All 68 records in one paste.</span>
+      </div>
+
+      <div style="background:#020817;border:1px solid #fbbf2430;border-radius:8px;padding:14px;margin-bottom:16px;font-size:11px;color:#fbbf24;font-family:JetBrains Mono,monospace;line-height:1.8;">
+        <strong>How to copy from Excel:</strong><br/>
+        1. Open your FSD Excel file<br/>
+        2. Click the sheet with all record definitions<br/>
+        3. Press <strong>Ctrl+A</strong> to select all<br/>
+        4. Press <strong>Ctrl+C</strong> to copy<br/>
+        5. Click the textarea below and press <strong>Ctrl+V</strong> to paste<br/>
+        6. Fill in Extract Type and TRN Marker below<br/>
+        7. Click <strong>Generate JSON Mapping</strong>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+        <div>
+          <div style="font-size:11px;color:#94a3b8;margin-bottom:5px;font-family:JetBrains Mono,monospace;">EXTRACT TYPE NAME <span style="color:#ef4444">*</span></div>
+          <input id="fsd-extract-name" type="text" placeholder="e.g. Pre Renewal"
+            style="width:100%;background:#020817;border:1px solid #334155;border-radius:6px;color:#e2e8f0;padding:8px 12px;font-size:12px;outline:none;font-family:JetBrains Mono,monospace;"/>
+        </div>
+        <div>
+          <div style="font-size:11px;color:#94a3b8;margin-bottom:5px;font-family:JetBrains Mono,monospace;">TRN MARKER RECORD TYPE <span style="color:#ef4444">*</span></div>
+          <input id="fsd-trn-marker" type="text" placeholder="e.g. TRN"
+            style="width:100%;background:#020817;border:1px solid #334155;border-radius:6px;color:#e2e8f0;padding:8px 12px;font-size:12px;outline:none;font-family:JetBrains Mono,monospace;"/>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:5px;font-family:JetBrains Mono,monospace;">DELIMITER IN EXTRACT FILE</div>
+        <select id="fsd-delimiter" style="background:#020817;border:1px solid #334155;border-radius:6px;color:#e2e8f0;padding:8px 12px;font-size:12px;outline:none;font-family:JetBrains Mono,monospace;margin-bottom:14px;">
+          <option value="|">Pipe |</option>
+          <option value=",">Comma ,</option>
+          <option value="~">Tilde ~</option>
+        </select>
+      </div>
+
+      <div style="font-size:11px;color:#94a3b8;margin-bottom:5px;font-family:JetBrains Mono,monospace;">PASTE FSD EXCEL DATA HERE <span style="color:#ef4444">*</span></div>
+      <textarea id="fsd-paste-area" placeholder="Paste your entire FSD Excel sheet here (Ctrl+A then Ctrl+C from Excel, then Ctrl+V here)..."
+        style="width:100%;height:260px;background:#020817;border:1px solid #1e293b;border-radius:8px;color:#4ade80;font-family:JetBrains Mono,monospace;font-size:11px;padding:12px;resize:vertical;line-height:1.6;outline:none;margin-bottom:14px;"></textarea>
+
+      <div id="fsd-status" style="display:none;font-size:11px;font-family:JetBrains Mono,monospace;padding:8px 12px;border-radius:6px;margin-bottom:12px;"></div>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button onclick="parseFSD()" style="flex:1;padding:12px;background:linear-gradient(135deg,#00d4ff20,#a78bfa20);border:1px solid #00d4ff50;border-radius:8px;color:#00d4ff;font-size:13px;font-weight:700;cursor:pointer;font-family:JetBrains Mono,monospace;letter-spacing:1px;">⚡ GENERATE JSON MAPPING</button>
+        <button onclick="clearFSD()" style="padding:12px 16px;background:#1e293b;border:1px solid #334155;border-radius:8px;color:#94a3b8;font-size:12px;cursor:pointer;font-family:JetBrains Mono,monospace;">🗑 Clear</button>
+      </div>
+    </div>
+
+    <!-- Preview Panel -->
+    <div id="fsd-preview" style="display:none;background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:20px;margin-bottom:16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+        <div>
+          <div style="font-size:15px;font-weight:800;font-family:Syne,sans-serif;color:#4ade80;" id="fsd-preview-title">Mapping Preview</div>
+          <div style="font-size:11px;color:#475569;margin-top:3px;" id="fsd-preview-sub"></div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button onclick="applyFSDMapping()" style="padding:8px 16px;background:linear-gradient(135deg,#4ade8020,#00d4ff20);border:1px solid #4ade8050;border-radius:8px;color:#4ade80;font-size:12px;font-weight:700;cursor:pointer;font-family:JetBrains Mono,monospace;">✅ Apply to Parser</button>
+          <button onclick="downloadFSDJson()" style="padding:8px 16px;background:#1e293b;border:1px solid #334155;border-radius:8px;color:#94a3b8;font-size:12px;cursor:pointer;font-family:JetBrains Mono,monospace;">⬇ Download JSON</button>
+          <button onclick="copyFSDJson()" style="padding:8px 16px;background:#1e293b;border:1px solid #334155;border-radius:8px;color:#a78bfa;font-size:12px;cursor:pointer;font-family:JetBrains Mono,monospace;">📋 Copy JSON</button>
+        </div>
+      </div>
+      <div id="fsd-record-summary" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;"></div>
+      <textarea id="fsd-json-output" readonly
+        style="width:100%;height:300px;background:#020817;border:1px solid #1e293b;border-radius:8px;color:#fbbf24;font-family:JetBrains Mono,monospace;font-size:11px;padding:12px;resize:vertical;line-height:1.6;outline:none;"></textarea>
+    </div>
+
+    <!-- Column mapping helper -->
+    <div style="background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:20px;">
+      <div style="font-size:13px;font-weight:700;color:#94a3b8;margin-bottom:12px;">📐 Expected FSD Column Order (from your Excel)</div>
+      <table style="width:100%;border-collapse:collapse;font-size:11px;">
+        <thead>
+          <tr style="background:var(--border);">
+            <th style="padding:6px 10px;text-align:left;color:#64748b;font-family:JetBrains Mono,monospace;font-size:10px;text-transform:uppercase;">Excel Col</th>
+            <th style="padding:6px 10px;text-align:left;color:#64748b;font-family:JetBrains Mono,monospace;font-size:10px;text-transform:uppercase;">FSD Column Name</th>
+            <th style="padding:6px 10px;text-align:left;color:#64748b;font-family:JetBrains Mono,monospace;font-size:10px;text-transform:uppercase;">Used For</th>
+            <th style="padding:6px 10px;text-align:left;color:#64748b;font-family:JetBrains Mono,monospace;font-size:10px;text-transform:uppercase;">Tab Index</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#fbbf24;font-family:JetBrains Mono,monospace;">A (0)</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#e2e8f0;">Record Type</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#4ade80;">Group records by this</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#475569;font-family:JetBrains Mono,monospace;">0</td></tr>
+          <tr><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#fbbf24;font-family:JetBrains Mono,monospace;">B (1)</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#e2e8f0;">Field Name</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#4ade80;">Field name in parser</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#475569;font-family:JetBrains Mono,monospace;">1</td></tr>
+          <tr><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#475569;font-family:JetBrains Mono,monospace;">C (2)</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#475569;">Description/Remarks</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#334155;">Ignored</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#475569;font-family:JetBrains Mono,monospace;">2</td></tr>
+          <tr><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#fbbf24;font-family:JetBrains Mono,monospace;">D (3)</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#e2e8f0;">Required (Y/N)</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#4ade80;">mandatory: true if Y</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#475569;font-family:JetBrains Mono,monospace;">3</td></tr>
+          <tr><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#475569;font-family:JetBrains Mono,monospace;">E (4)</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#475569;">Table Name</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#334155;">Ignored</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#475569;font-family:JetBrains Mono,monospace;">4</td></tr>
+          <tr><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#475569;font-family:JetBrains Mono,monospace;">F (5)</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#475569;">Column Name</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#334155;">Ignored</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#475569;font-family:JetBrains Mono,monospace;">5</td></tr>
+          <tr><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#475569;font-family:JetBrains Mono,monospace;">G (6)</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#475569;">Data Type</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#334155;">Ignored</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#475569;font-family:JetBrains Mono,monospace;">6</td></tr>
+          <tr><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#fbbf24;font-family:JetBrains Mono,monospace;">H (7)</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#e2e8f0;">Length</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#4ade80;">Detect valid rows (must be number)</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#475569;font-family:JetBrains Mono,monospace;">7</td></tr>
+          <tr><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#475569;font-family:JetBrains Mono,monospace;">I (8)</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#475569;">Starting Position</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#334155;">Ignored (#VALUE error)</td><td style="padding:6px 10px;border-bottom:1px solid #1e293b;color:#475569;font-family:JetBrains Mono,monospace;">8</td></tr>
+          <tr><td style="padding:6px 10px;color:#475569;font-family:JetBrains Mono,monospace;">J (9)</td><td style="padding:6px 10px;color:#475569;">Ending Position</td><td style="padding:6px 10px;color:#334155;">Ignored (#VALUE error)</td><td style="padding:6px 10px;color:#475569;font-family:JetBrains Mono,monospace;">9</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px;font-size:11px;color:#475569;font-family:JetBrains Mono,monospace;background:#020817;border:1px solid #1e293b;border-radius:6px;padding:10px;">
+        ⚠ A row is <strong style="color:#e2e8f0;">skipped</strong> if: Col A is blank, Col B is blank, or Col H (Length) is not a number.<br/>
+        ✅ A row is <strong style="color:#4ade80;">included</strong> if: Col A has a record type, Col B has a field name, and Col H has a numeric length.<br/>
+        🔖 <strong style="color:#00d4ff;">pos:1 is always auto-assigned as "Record Type"</strong> for every record. Your FSD fields start at pos:2 (position 4 in the file). This matches the file format where chars 1–3 are the record type and fields begin at char 4.
+      </div>
+    </div>
+  </div>
 </div><!-- /main -->
 
 <script>
@@ -600,12 +757,92 @@ const TEMPLATES={
         {pos:3,name:"Total DR"},{pos:4,name:"Total CR"},{pos:5,name:"File Status",allowedValues:["OK","ERR",""]}
       ]}
     }
+  },
+
+  // ╔══════════════════════════════════════════════════════════════════════╗
+  // ║  CUSTOM TEMPLATE — REPLACE null WITH YOUR VALIDATED JSON BELOW      ║
+  // ║  Steps:                                                              ║
+  // ║  1. Open this HTML in Notepad or VS Code                            ║
+  // ║  2. Find this comment block                                          ║
+  // ║  3. Replace null with your final validated JSON object              ║
+  // ║  4. Save the file — your template appears as "Ext-Final" button     ║
+  // ╚══════════════════════════════════════════════════════════════════════╝
+  "ext-final": {
+    "extractType": "Pre Renewal",
+    "delimiter": "|",
+    "trnRecordType": "TRN",
+    "records": {
+      "TRN": {
+        "name": "Transaction Start",
+        "color": "#00d4ff",
+        "icon": "🔖",
+        "fields": [
+          { "pos": 1, "name": "Record Type", "mandatory": true },
+          { "pos": 2, "name": "TRN ID", "mandatory": true },
+          { "pos": 3, "name": "Account Number", "mandatory": true },
+          { "pos": 4, "name": "TRN Date", "mandatory": true, "format": "^[0-9]{8}$" },
+          { "pos": 5, "name": "TRN Type", "mandatory": true },
+          { "pos": 6, "name": "Currency", "format": "^[A-Z]{3}$" }
+        ]
+      },
+      "100": {
+        "name": "File Header",
+        "color": "#a78bfa",
+        "icon": "⬛",
+        "fields": [
+          { "pos": 1, "name": "Record Type", "mandatory": true },
+          { "pos": 2, "name": "File Date", "mandatory": true, "format": "^[0-9]{8}$" },
+          { "pos": 3, "name": "Institution ID", "mandatory": true },
+          { "pos": 4, "name": "Extract Type" }
+        ]
+      },
+      "200": {
+        "name": "Transaction Detail",
+        "color": "#4ade80",
+        "icon": "💳",
+        "fields": [
+          { "pos": 1, "name": "Record Type", "mandatory": true },
+          { "pos": 2, "name": "Account Number", "mandatory": true },
+          { "pos": 3, "name": "TXN ID", "mandatory": true },
+          { "pos": 4, "name": "TXN Date", "mandatory": true, "format": "^[0-9]{8}$" },
+          { "pos": 5, "name": "Value Date", "format": "^[0-9]{8}$" },
+          { "pos": 6, "name": "TXN Code", "mandatory": true },
+          { "pos": 7, "name": "DR/CR Indicator", "mandatory": true, "allowedValues": ["DR","CR"] },
+          { "pos": 8, "name": "Amount", "mandatory": true, "format": "^[0-9]+(\\.[0-9]{1,2})?$" },
+          { "pos": 9, "name": "Balance" },
+          { "pos": 10, "name": "Currency", "format": "^[A-Z]{3}$" },
+          { "pos": 11, "name": "Narration" },
+          { "pos": 12, "name": "Reference" },
+          { "pos": 13, "name": "Channel" }
+        ]
+      },
+      "999": {
+        "name": "File Trailer",
+        "color": "#94a3b8",
+        "icon": "✅",
+        "fields": [
+          { "pos": 1, "name": "Record Type", "mandatory": true },
+          { "pos": 2, "name": "Total Records", "mandatory": true, "format": "^[0-9]+$" },
+          { "pos": 3, "name": "Total DR" },
+          { "pos": 4, "name": "Total CR" },
+          { "pos": 5, "name": "File Status" }
+        ]
+      }
+    }
   }
+  // ═══════════════════ END CUSTOM TEMPLATE ═════════════════════════════
+
 };
 
 function loadTemplate(k){
-  document.getElementById("json-input").value=JSON.stringify(TEMPLATES[k],null,2);
+  const tpl = TEMPLATES[k];
+  if(tpl === null || tpl === undefined){
+    showStatus("err","❌ Template not set. Open this HTML in Notepad, find the CUSTOM TEMPLATE section, and replace the JSON.");
+    return;
+  }
+  document.getElementById("json-input").value=JSON.stringify(tpl,null,2);
   document.getElementById("json-status").style.display="none";
+  if(k==="ext-final") showStatus("ok","✅ Ext-Final template loaded — click Apply Mapping to activate.");
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -733,16 +970,44 @@ function getDelimiter(){return document.getElementById("delimiter-select").value
 // ═══════════════════════════════════════════════════════════════════════════
 // VALIDATE FIELD
 // ═══════════════════════════════════════════════════════════════════════════
-function validateField(value,rule){
+function validateField(value,rule,missing){
   const issues=[];
-  if(rule.mandatory&&(!value||value.trim()==="")){issues.push("Mandatory — blank");}
-  if(value&&value.trim()&&rule.allowedValues&&rule.allowedValues.length){
-    if(!rule.allowedValues.includes(value.trim()))
-      issues.push(`"${value}" not in [${rule.allowedValues.join(",")}]`);
+
+  // If field not present in line at all
+  if(missing){
+    if(rule.mandatory) issues.push("Mandatory — field missing from line");
+    else issues.push("Field missing from line");
+    return issues;
   }
-  if(value&&value.trim()&&rule.format){
-    try{if(!new RegExp(rule.format).test(value.trim()))issues.push(`Format mismatch: ${rule.format}`);}catch(e){}
+
+  const trimmed=value.trim();
+
+  // Check 1: Mandatory blank
+  if(rule.mandatory&&trimmed===""){
+    issues.push("Mandatory — blank");
   }
+
+  // Check 2: Length exceeded
+  if(rule.length&&trimmed.length>rule.length){
+    issues.push(`Exceeds max length: ${trimmed.length}/${rule.length}`);
+  }
+
+  // Check 3: Allowed values
+  if(trimmed&&rule.allowedValues&&rule.allowedValues.length){
+    if(!rule.allowedValues.includes(trimmed))
+      issues.push(`"${trimmed}" not in [${rule.allowedValues.join(",")}]`);
+  }
+
+  // Check 4: Format / regex
+  if(trimmed&&rule.format){
+    try{
+      if(!new RegExp(rule.format).test(trimmed))
+        issues.push(`Format mismatch: ${rule.format}`);
+    }catch(e){
+      issues.push(`Invalid format rule: ${rule.format}`);
+    }
+  }
+
   return issues;
 }
 
@@ -772,13 +1037,15 @@ function parseFile(){
       record={lineNum,recordType:rt||"?",name:"Unknown",icon:"⚠",raw:line,fields:[],color:"#ef4444",bg:"rgba(239,68,68,0.08)",error:true,hasValIssues:false};
     } else {
       const mapped=def.fields.map((fname,i)=>{
-        const value=fields[i]?.trim()||"";
+        const raw=fields[i];
+        const missing=raw===undefined;          // field not present in line at all
+        const value=missing?"":raw.trim();      // normalise to string for display & validation
         const rule=def.rules[i]||{};
-        const issues=validateField(value,rule);
+        const issues=validateField(value,rule,missing);
         if(issues.length){
           validationIssues.push({line:lineNum,trnNum:trnCounter,rt,recordName:def.name,fieldName:fname,pos:i+1,value,msg:issues.join("; ")});
         }
-        return{fieldName:fname,value,position:i+1,issues};
+        return{fieldName:fname,value,position:i+1,issues,missing};
       });
       record={lineNum,recordType:rt,name:def.name,icon:def.icon,color:def.color,bg:def.bg,fields:mapped,raw:line,error:false,hasValIssues:mapped.some(f=>f.issues&&f.issues.length)};
     }
@@ -992,9 +1259,13 @@ function renderGroups(){
         ?`<div style="color:#ef4444;font-size:12px;font-family:'JetBrains Mono',monospace;padding:8px 0">Raw: ${escHtml(r.raw)}</div>`
         :`<div class="fields-grid">${r.fields.map(f=>{
           const hasFail=f.issues&&f.issues.length;
-          return`<div class="field-card ${hasFail?"vfail":""}">
+          const isMissing=f.missing;
+          const displayVal=isMissing
+            ?`<span style="color:#ef4444;font-size:10px;font-style:italic;">MISSING</span>`
+            :`${escHtml(f.value)||'<span style="color:var(--text5);">—</span>'}`;
+          return`<div class="field-card ${hasFail?(isMissing?"":"vfail"):""}" style="${isMissing?"border-color:#ef444450;background:#ef444408;":""}">
             <div class="field-label">[${f.position}] ${escHtml(f.fieldName)}${hasFail?" ⚠":""}</div>
-            <div class="field-value" style="color:${f.value?(hasFail?"#f97316":r.color):"#1e293b"}">${escHtml(f.value)||"—"}</div>
+            <div class="field-value" style="color:${isMissing?"#ef4444":(f.value?(hasFail?"#f97316":r.color):"var(--text5)")}">${displayVal}</div>
             ${hasFail?`<div class="field-val-msg">${f.issues.map(m=>escHtml(m)).join(" · ")}</div>`:""}
           </div>`;}).join("")}</div>`;
       const vTag=r.hasValIssues?`<span class="val-fail-tag">⚠ ${r.fields.filter(f=>f.issues&&f.issues.length).length}</span>`
@@ -1120,11 +1391,11 @@ function buildLegend(){
 // TAB / UTILS
 // ═══════════════════════════════════════════════════════════════════════════
 function switchTab(tab){
-  ["parser","mapping","legend","readme"].forEach(t=>{
+  ["parser","mapping","legend","readme","fsd"].forEach(t=>{
     document.getElementById(t+"-tab").style.display=t===tab?"block":"none";
   });
   document.querySelectorAll(".tab-btn").forEach((b,i)=>{
-    b.classList.toggle("active",["parser","mapping","legend","readme"][i]===tab);
+    b.classList.toggle("active",["parser","mapping","legend","readme","fsd"][i]===tab);
   });
 }
 function copyPrompt(){
@@ -1225,7 +1496,7 @@ function renderRecordCountCheck(){
   titleEl.innerHTML = allPass
     ? `<span style="color:#4ade80">✅ Record Count Check — All Passed</span>`
     : `<span style="color:#f97316">⚠ Record Count Check — ${rows.filter(r=>r.pass===false).length} Issue(s)</span>`;
-  titleEl.style.borderBottom = "1px solid #1e293b";
+  titleEl.style.borderBottom = "1px solid var(--border)";
   titleEl.style.paddingBottom = "10px";
   titleEl.style.marginBottom = "12px";
 
@@ -1473,8 +1744,217 @@ function generateReport(){
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
+// FSD IMPORTER
+// ═══════════════════════════════════════════════════════════════════════════
+
+const AUTO_COLORS_FSD=["#00d4ff","#a78bfa","#fb923c","#4ade80","#34d399","#f87171","#fbbf24","#f472b6","#60a5fa","#e879f9","#2dd4bf","#fb7185","#94a3b8","#38bdf8","#818cf8","#fb923c","#facc15","#a3e635"];
+const AUTO_ICONS_FSD=["🔖","⬛","🏦","👤","💳","📎","↩️","📋","🔒","❄️","💰","📈","🏠","✅","📌","🔑","📂","🗂","📊","🔐","💼","📝","🧾","🔔"];
+
+let generatedFSDJson = null;
+
+function parseFSD(){
+  const raw = document.getElementById("fsd-paste-area").value.trim();
+  const extractName = document.getElementById("fsd-extract-name").value.trim();
+  const trnMarker = document.getElementById("fsd-trn-marker").value.trim();
+  const delimiter = document.getElementById("fsd-delimiter").value;
+  const statusEl = document.getElementById("fsd-status");
+
+  if(!extractName){ showFSDStatus("err","❌ Enter Extract Type Name first."); return; }
+  if(!trnMarker){ showFSDStatus("err","❌ Enter TRN Marker Record Type first."); return; }
+  if(!raw){ showFSDStatus("err","❌ Paste your FSD Excel data first."); return; }
+
+  const lines = raw.split("\n");
+  const recordMap = {}; // { "100": [{name, mandatory, length, pos}] }
+  const recordOrder = [];
+  let validRows = 0, skippedRows = 0;
+
+  lines.forEach((line, idx) => {
+    if(!line.trim()) { skippedRows++; return; }
+
+    // Split by tab (Excel copy uses tab)
+    const cols = line.split("\t");
+
+    const colA = (cols[0]||"").trim(); // Record Type
+    const colB = (cols[1]||"").trim(); // Field Name
+    const colD = (cols[3]||"").trim(); // Required Y/N
+    const colH = (cols[7]||"").trim(); // Length
+
+    // Skip if no record type
+    if(!colA) { skippedRows++; return; }
+
+    // Skip if no field name (header/merged row)
+    if(!colB) { skippedRows++; return; }
+
+    // Skip if length is not numeric or blank (header row detection)
+    const length = parseInt(colH);
+    if(isNaN(length)) { skippedRows++; return; }
+
+    // Skip if col B looks like a header (contains "Field" and "Name" etc)
+    const lowerB = colB.toLowerCase();
+    if(lowerB === "field name" || lowerB === "fieldname" || lowerB === "name") { skippedRows++; return; }
+
+    // Skip if col A looks like a header
+    const lowerA = colA.toLowerCase();
+    if(lowerA === "record type" || lowerA === "recordtype" || lowerA === "type") { skippedRows++; return; }
+
+    // Valid row
+    if(!recordMap[colA]) {
+      recordMap[colA] = [];
+      recordOrder.push(colA);
+      // pos:1 is always the record type token in the actual file (chars 1-3).
+      // FSD fields begin at position 2 (char 4 onwards), so pre-insert it.
+      recordMap[colA].push({
+        pos: 1,
+        name: "Record Type",
+        mandatory: true,
+        length: 3,
+        _autoInserted: true
+      });
+    }
+
+    recordMap[colA].push({
+      pos: recordMap[colA].length + 1,  // starts at 2 because Record Type occupies pos:1
+      name: colB,
+      mandatory: colD.toUpperCase() === "Y",
+      length: length
+    });
+    validRows++;
+  });
+
+  const rtCount = Object.keys(recordMap).length;
+
+  if(rtCount === 0){
+    showFSDStatus("err", "❌ No valid records found. Check your paste — make sure you copied from Excel with Ctrl+A then Ctrl+C.");
+    return;
+  }
+
+  // Build JSON object
+  const records = {};
+  let colorIdx = 0;
+  recordOrder.forEach(rt => {
+    const fields = recordMap[rt];
+    const color = AUTO_COLORS_FSD[colorIdx % AUTO_COLORS_FSD.length];
+    const icon = AUTO_ICONS_FSD[colorIdx % AUTO_ICONS_FSD.length];
+    records[rt] = {
+      name: rt === trnMarker ? "Transaction Start" : "Record " + rt,
+      color: color,
+      icon: icon,
+      fields: fields.map(f => {
+        const obj = { pos: f.pos, name: f.name };
+        if(f.mandatory) obj.mandatory = true;
+        return obj;
+        // Note: _autoInserted is intentionally not copied to output
+      })
+    };
+    colorIdx++;
+  });
+
+  const mapping = {
+    extractType: extractName,
+    delimiter: delimiter,
+    trnRecordType: trnMarker,
+    records: records
+  };
+
+  generatedFSDJson = mapping;
+
+  // Show preview
+  document.getElementById("fsd-preview").style.display = "block";
+  document.getElementById("fsd-preview-title").textContent = "✅ Mapping Generated — " + extractName;
+  document.getElementById("fsd-preview-sub").textContent =
+    rtCount + " record types · " + validRows + " fields · " + skippedRows + " rows skipped (headers/blanks)";
+
+  // Record type badges
+  const badges = recordOrder.map(rt => {
+    const def = records[rt];
+    const fieldCount = recordMap[rt].length;
+    const isTrn = rt === trnMarker;
+    return `<span style="background:${def.color}15;border:1px solid ${def.color}40;border-radius:6px;padding:4px 10px;font-size:11px;color:${def.color};font-family:JetBrains Mono,monospace;">
+      ${isTrn?"🔖 ":""}${escHtml(rt)} · ${fieldCount} fields${isTrn?" · TRN MARKER":""}
+    </span>`;
+  }).join("");
+  document.getElementById("fsd-record-summary").innerHTML = badges;
+
+  document.getElementById("fsd-json-output").value = JSON.stringify(mapping, null, 2);
+
+  showFSDStatus("ok",
+    "✅ " + rtCount + " record types · " + validRows + " fields imported · " + skippedRows + " header/blank rows skipped"
+  );
+}
+
+function showFSDStatus(type, msg){
+  const el = document.getElementById("fsd-status");
+  el.style.display = "block";
+  el.style.background = type === "ok" ? "#4ade8015" : "#ef444415";
+  el.style.border = "1px solid " + (type === "ok" ? "#4ade8030" : "#ef444430");
+  el.style.color = type === "ok" ? "#4ade80" : "#ef4444";
+  el.textContent = msg;
+}
+
+function applyFSDMapping(){
+  if(!generatedFSDJson){ alert("Generate mapping first."); return; }
+  // Load into mapping tab textarea and apply
+  document.getElementById("json-input").value = JSON.stringify(generatedFSDJson, null, 2);
+  applyMapping();
+  switchTab("parser");
+  // Show a quick confirm
+  setTimeout(()=>{ alert("✅ Mapping applied! You are now on the Parser tab. Paste your extract file and click Parse."); }, 300);
+}
+
+function downloadFSDJson(){
+  if(!generatedFSDJson){ alert("Generate mapping first."); return; }
+  const name = (generatedFSDJson.extractType||"mapping").replace(/[^a-zA-Z0-9]/g,"_");
+  const blob = new Blob([JSON.stringify(generatedFSDJson, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = name + "_mapping.json";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function copyFSDJson(){
+  if(!generatedFSDJson){ alert("Generate mapping first."); return; }
+  navigator.clipboard.writeText(JSON.stringify(generatedFSDJson, null, 2)).then(()=>{
+    const btn = document.querySelector("[onclick=\"copyFSDJson()\"]");
+    if(btn){ btn.textContent="✅ Copied!"; setTimeout(()=>btn.textContent="📋 Copy JSON", 2000); }
+  });
+}
+
+function clearFSD(){
+  document.getElementById("fsd-paste-area").value = "";
+  document.getElementById("fsd-extract-name").value = "";
+  document.getElementById("fsd-trn-marker").value = "";
+  document.getElementById("fsd-status").style.display = "none";
+  document.getElementById("fsd-preview").style.display = "none";
+  generatedFSDJson = null;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// THEME
+// ═══════════════════════════════════════════════════════════════════════════
+function applyTheme(mode){
+  const btn = document.getElementById("theme-toggle");
+  if(mode==="day"){
+    document.body.classList.add("day");
+    btn.textContent = "🌙 Night";
+  } else {
+    document.body.classList.remove("day");
+    btn.textContent = "☀️ Day";
+  }
+  localStorage.setItem("fis-theme", mode);
+}
+function toggleTheme(){
+  const isDay = document.body.classList.contains("day");
+  applyTheme(isDay ? "night" : "day");
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════════════════════════
+applyTheme(localStorage.getItem("fis-theme") || "day");
 document.getElementById("no-mapping-msg").style.display="block";
 buildLegend();
 </script>
